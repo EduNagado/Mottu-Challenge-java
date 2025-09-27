@@ -1,37 +1,36 @@
 package com.MottuChallenge_Java.gef.model;
 
-
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 
 @Entity
 public class Usuario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "O perfil é obrigatório")
-    @Enumerated(EnumType.STRING)
-    private Cargo cargo;
+    @NotBlank(message = "O nome é obrigatório")
+    private String name;
 
-    @NotBlank(message = "O nome de usuário é obrigatório.")
-    private String nome;
-
-    @NotBlank(message = "campo obrigatório")
-    @Size(min = 8, message = "A senha deve ter pelo menos 8 caracteres")
-    private String password;
-
-    @Email(message = "Email fora do formato correto.")
+    @Column(unique = true)
     private String email;
 
-    @CPF(message = "CPF fora do formato correto.")
-    private String cpf;
+    private String avatarUrl;
 
+    // Construtor padrão necessário para JPA
+    protected Usuario() {}
+
+    // Construtor a partir do OAuth2User
+    public Usuario(OAuth2User principal) {
+        this.name = principal.getAttributes().get("name").toString();
+        this.email = principal.getAttributes().get("email").toString();
+        this.avatarUrl = principal.getAttributes().getOrDefault("avatar_url", "").toString();
+    }
+
+    // Getters e Setters
     public Long getId() {
         return id;
     }
@@ -40,28 +39,12 @@ public class Usuario {
         this.id = id;
     }
 
-    public Cargo getCargo() {
-        return cargo;
+    public String getName() {
+        return name;
     }
 
-    public void setCargo(Cargo cargo) {
-        this.cargo = cargo;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPassword() {
-        return password;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -72,11 +55,11 @@ public class Usuario {
         this.email = email;
     }
 
-    public String getCpf() {
-        return cpf;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 }

@@ -6,6 +6,8 @@ import com.MottuChallenge_Java.gef.model.Status;
 import com.MottuChallenge_Java.gef.service.MotoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,20 +18,22 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/motos")
-public class MotoController {
+public class MotoController extends BaseController {
 
     @Autowired
     private MotoService motoService;
 
     @GetMapping("/lista")
-    public String listarMotos(Model model) {
+    public String listarMotos(@AuthenticationPrincipal OAuth2User principal, Model model) {
+        addUserToModel(principal, model);
         List<Moto> motos = motoService.readMotos();
         model.addAttribute("listaMotos", motos);
         return "motoLista";
     }
 
     @GetMapping("/cadastro")
-    public String cadastroMoto(Model model) {
+    public String cadastroMoto(@AuthenticationPrincipal OAuth2User principal, Model model) {
+        addUserToModel(principal, model);
         model.addAttribute("moto", new Moto());
         model.addAttribute("modeloLista", Arrays.asList(Modelo.values()));
         model.addAttribute("statusLista", Arrays.asList(Status.values()));
@@ -37,26 +41,32 @@ public class MotoController {
     }
 
     @PostMapping("/cadastrar")
-    public String cadastrarMoto(@Valid Moto moto, BindingResult result, Model model) {
+    public String cadastrarMoto(@AuthenticationPrincipal OAuth2User principal,
+                                @Valid Moto moto, BindingResult result, Model model) {
+        addUserToModel(principal, model);
+
         if (result.hasErrors()) {
             model.addAttribute("moto", moto);
             model.addAttribute("modeloLista", Arrays.asList(Modelo.values()));
             model.addAttribute("statusLista", Arrays.asList(Status.values()));
             return "motoCadastro";
         }
+
         if (moto.getId() == null) {
             motoService.createMoto(moto);
         } else {
             motoService.updateMoto(moto);
         }
-        return listarMotos(model);
+        return "redirect:/motos/lista";
     }
 
     @GetMapping("/cadastro/{id}")
-    public String editarMoto(@PathVariable Long id, Model model) {
+    public String editarMoto(@AuthenticationPrincipal OAuth2User principal,
+                             @PathVariable Long id, Model model) {
+        addUserToModel(principal, model);
         Moto moto = motoService.readMoto(id);
         if (moto == null) {
-            return listarMotos(model);
+            return "redirect:/motos/lista";
         }
         model.addAttribute("moto", moto);
         model.addAttribute("modeloLista", Arrays.asList(Modelo.values()));
@@ -65,8 +75,10 @@ public class MotoController {
     }
 
     @GetMapping("/deletar/{id}")
-    public String deletarMoto(@PathVariable Long id, Model model) {
+    public String deletarMoto(@AuthenticationPrincipal OAuth2User principal,
+                              @PathVariable Long id, Model model) {
+        addUserToModel(principal, model);
         motoService.deleteMoto(id);
-        return listarMotos(model);
+        return "redirect:/motos/lista";
     }
 }

@@ -22,10 +22,6 @@ public class Patio {
     @PositiveOrZero(message = "A quantidade de vagas não pode ser negativa.")
     private Integer quantidadeVagas;
 
-    @ManyToOne
-    @JoinColumn(name = "cadastro_por")
-    private Usuario cadastroPor;
-
     @OneToMany(mappedBy = "patio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Moto> motos = new ArrayList<>();
 

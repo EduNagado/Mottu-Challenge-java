@@ -32,10 +32,6 @@ public class Moto {
     private Status status;
 
     @ManyToOne
-    @JoinColumn(name = "cadastro_por")
-    private Usuario cadastroPor;
-
-    @ManyToOne
     @JoinColumn(name = "patio_id")
     private Patio patio;
 

@@ -1,29 +1,58 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Cabeçalho</title>
+    <title th:text="#{header.titulo}"></title>
     <link th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" rel="stylesheet"/>
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
 </head>
 <body>
 <div th:fragment="cabecalho" class="header shadow-sm">
-    <div class="container d-flex justify-content-between align-items-center">
-        <h1 class="fw-bold">Mottu App</h1>
-    </div>
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center py-2">
+            <h1 class="fw-bold">Mottu App</h1>
+            <div class="d-flex align-items-center">
 
-    <nav class="navbar navbar-expand-lg mt-2">
-        <div class="container">
-            <div class="navbar-nav">
-                <a class="nav-item nav-link" th:href="@{/usuarios/lista}">Usuários</a>
-                <a class="nav-item nav-link" th:href="@{/usuarios/cadastro}">Cadastrar Usuário</a>
-                <a class="nav-item nav-link" th:href="@{/motos/lista}">Motos</a>
-                <a class="nav-item nav-link" th:href="@{/motos/cadastro}">Cadastrar Moto</a>
-                <a class="nav-item nav-link" th:href="@{/patios/lista}">Pátios</a>
-                <a class="nav-item nav-link" th:href="@{/patios/cadastro}">Cadastrar Pátio</a>
+                <ul class="navbar-nav me-3">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">🌎</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="?lang=pt_BR">🇧🇷 Português</a></li>
+                            <li><a class="dropdown-item" href="?lang=en_US">🇺🇸 English</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+
+                <!-- Autenticado -->
+                <div sec:authorize="isAuthenticated()" class="dropdown dropdown-end ms-3">
+                    <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                        <div class="w-10 rounded-full">
+                            <img alt="avatar do usuário" th:src="${avatar}" />
+                        </div>
+                    </div>
+                    <ul class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                        <li>
+                            <form th:action="@{/logout}" method="post">
+                                <button type="submit" class="btn btn-danger w-100">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </nav>
+
+        <nav class="navbar navbar-expand-lg">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" th:href="@{/motos/lista}" th:text="#{header.nav.motos}">Motos</a>
+                <a class="nav-item nav-link" th:href="@{/motos/cadastro}" th:text="#{header.nav.cadastrar.moto}">Cadastrar Moto</a>
+                <a class="nav-item nav-link" th:href="@{/patios/lista}" th:text="#{header.nav.patios}">Pátios</a>
+                <a class="nav-item nav-link" th:href="@{/patios/cadastro}" th:text="#{header.nav.cadastrar.patio}">Cadastrar Pátio</a>
+            </div>
+        </nav>
+    </div>
 </div>
 </body>
 </html>
+
