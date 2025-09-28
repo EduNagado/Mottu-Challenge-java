@@ -17,7 +17,7 @@ public class PatioService {
         this.patioRepository = patioRepository;
     }
 
-    // CRUD -> Create, Read, Update, Delete
+
     public Patio createPatio(Patio patio) {
         return patioRepository.save(patio);
     }

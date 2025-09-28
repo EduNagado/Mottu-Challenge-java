@@ -19,7 +19,7 @@ public class MotoService {
         this.motoRepository = motoRepository;
     }
 
-    // CRUD -> Create, Read, Update, Delete
+
     public Moto createMoto(Moto moto) {
         return motoRepository.save(moto);
     }
