@@ -20,17 +20,17 @@ public class Usuario {
 
     private String avatarUrl;
 
-    // Construtor padrão necessário para JPA
+
     protected Usuario() {}
 
-    // Construtor a partir do OAuth2User
+
     public Usuario(OAuth2User principal) {
         this.name = principal.getAttributes().get("name").toString();
         this.email = principal.getAttributes().get("email").toString();
         this.avatarUrl = principal.getAttributes().getOrDefault("avatar_url", "").toString();
     }
 
-    // Getters e Setters
+
     public Long getId() {
         return id;
     }

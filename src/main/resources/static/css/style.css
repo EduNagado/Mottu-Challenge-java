@@ -1,6 +1,6 @@
 /* ----------- ESTILO GLOBAL ----------- */
 body {
-    background-color: #121212; /* preto suave */
+    background-color: #121212;
     color: #F5F5F5;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -22,9 +22,10 @@ a:hover {
 /* ----------- HEADER ----------- */
 .header {
     background-color: #000;
-    padding: 15px;
+    padding: 5px 15px;
     border-bottom: 3px solid #00A859;
 }
+
 
 .header h1 {
     color: #00A859;
@@ -54,7 +55,6 @@ a:hover {
     font-size: 14px;
     margin-top: auto;
 }
-
 
 
 
@@ -121,8 +121,8 @@ form label {
 }
 
 .form-select option {
-    background-color: #000; /* fundo preto */
-    color: #fff;            /* texto branco */
+    background-color: #000;
+    color: #fff;
 }
 
 /* ----------- ERROS ----------- */
