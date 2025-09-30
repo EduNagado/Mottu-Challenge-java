@@ -16,7 +16,7 @@ public class SecurityConfiguration {
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(login -> login
-                        // Redireciona para /motos/cadastro após login
+
                         .defaultSuccessUrl("/motos/cadastro", true)
                 )
                 .build();
